@@ -28,10 +28,6 @@ While Class 4 was the top prediction, LIME can help us understand why the model 
 
 "Andreas Oberweis"
 
-markdown
-Copy
-Edit
-
 ### ➕ Feature Contributions for Class 2
 
 | Word       | Weight     | Contribution                                 |
