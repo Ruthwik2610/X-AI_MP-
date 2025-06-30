@@ -1,4 +1,4 @@
-# X-AI_MP-
+# Classification and Explanation with XGBoost and LIME
 
 Welcome to the **X-AI_MP-** repository!  
 This project is designed as an exploration into advanced machine learning and artificial intelligence methodologies, providing modular, practical code and resources for enthusiasts, students, and professionals alike.
