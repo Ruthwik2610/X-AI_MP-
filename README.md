@@ -1,69 +1,110 @@
-# Classification and Explanation with XGBoost and LIME
+Classification and Explanation with XGBoost and LIME
 
-Welcome to the  repository!  
+Project Structure: 
 
-## 🚀 Overview
+project/
+├── data/
+│   ├── aifbfixed_complete.n3
+│   ├── completeDataset.tsv
+│   ├── trainingSet.tsv
+│   └── testSet.tsv
+├── main.ipynb           # Baseline model (78% accuracy)
+├── improved.ipynb       # Refined model (86% accuracy)
+├── clean.csv            # Preprocessed dataset for improved model
+├── requirements.txt     # Required packages
+└── README.txt           # ← You are here
 
-X-AI_MP- aims to:
+-------------------------------------------------------------------------------------------
+Prerequisites:
+Ensure you have Python 3.8+ and the following packages installed:
 
-- Demonstrate core machine learning and AI concepts through code.
-- Serve as a learning resource for applying AI models to real-world scenarios.
-- Provide modular examples for rapid experimentation and prototyping.
+pip install pandas numpy rdflib scikit-learn xgboost lime matplotlib seaborn
 
-## 📦 Features
+Alternatively, run: pip install -r requirements.txt
+-------------------------------------------------------------------------------------------
+ Dataset Setup:
 
-- Implementations of popular machine learning algorithms.
-- Example datasets and data preprocessing scripts.
-- Modular code structure for easy extension and reuse.
-- Documentation and comments to aid understanding.
+⦁	Make sure the following files are present in the data/ folder:
+⦁	aifbfixed_complete.n3 – RDF Knowledge Graph
+⦁	trainingSet.tsv / testSet.tsv – Train/test entity URIs + labels
+⦁	completeDataset.tsv – For label distribution visualization
 
-## 🛠️ Installation
+-------------------------------------------------------------------------------------------
 
-1. **Clone this repository:**
-   ```bash
-   git clone https://github.com/Ruthwik2610/X-AI_MP-.git
-   cd X-AI_MP-
-   ```
-2. **Install required dependencies:**  
-   *(Dependencies may vary, update this section as needed)*
-   ```bash
-   pip install -r requirements.txt
-   ```
+Execution Order
+Step 1: Run main.ipynb
+Implements baseline classification pipeline
+Uses all features after variance thresholding
+Test Accuracy: ~78%
 
-## 📂 Project Structure
+ Includes:
 
-```plaintext
-X-AI_MP-/
-│
-├── data/               # Datasets and data processing scripts
-├── models/             # Machine learning model implementations
-├── utils/              # Utility functions and helpers
-├── notebooks/          # Jupyter/Colab notebooks for experiments
-├── requirements.txt    # Python dependencies
-└── README.md           # Project documentation
-```
+⦁	RDF parsing, preprocessing
+⦁	Feature selection
+⦁	XGBoost training + evaluation
+⦁	LIME local explanation
 
-## 🧑‍💻 Usage
+Step 2: 
+⦁	Run improved.ipynb
+⦁	Builds upon main.ipynb using model-driven feature selection
+⦁	Uses only features with high importance scores
+⦁	Input data: clean.csv (filtered dataset with valid persons only)
+⦁	Test Accuracy: 86%
 
-- Browse the `notebooks/` folder for interactive examples.
-- Use scripts in `models/` to train or evaluate models.
-- Refer to in-code comments and docstrings for guidance.
+-------------------------------------------------------------------------------------------
 
-## 🤝 Contributing
+Running the Notebooks:
 
-Contributions are welcome!  
-To contribute:
+Open the notebooks with Jupyter Notebook or VSCode, and run cells sequentially.
 
-1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Open a pull request
+Sections include:
+⦁	Setup and Imports
+⦁	RDF Graph Parsing and Preprocessing
+⦁	Data Cleaning and Label Extraction
+⦁	Feature Engineering + Selection
+⦁	Model Training using XGBoost
+⦁	LIME-based Explanation
+⦁	Class Distribution and Feature Importance Visualization
 
-## 📄 License
+-------------------------------------------------------------------------------------------
 
-This project is open source and available under the [MIT License](LICENSE).
+Key Outputs
+⦁	Train & Test Accuracy + Classification Report
+⦁	Visualized Label Distribution
+⦁	Top 20 Features from XGBoost
+⦁	LIME Explanation for a sample instance
 
-## 🙏 Acknowledgements
+-------------------------------------------------------------------------------------------
 
-Inspired by open-source AI communities and educational resources.
+Highlights of the Pipeline:
+
+⦁	Converts RDF triples into tabular format
+⦁	Uses VarianceThreshold for feature filtering
+⦁	Handles multi-class classification using XGBoost
+⦁	Applies LIME for instance-level explanation
+⦁	Improves accuracy from 78% to 86% with feature importance filtering
+-------------------------------------------------------------------------------------------
+
+Troubleshooting: 
+
+⦁	Ensure all file paths and formats match expectations
+⦁	Check .n3 encoding if RDF parsing fails
+⦁	clean.csv should exist before running improved.ipynb
+⦁	For best LIME results, use discretize_continuous=True and ensure valid instances
+
+-------------------------------------------------------------------------------------------
+
+References:
+🔗 LIME Tutorial – Official Docs 
+https://marcotcr.github.io/lime/tutorials/Lime%20-%20basic%20usage%2C%20two%20class%20case.html
+🔗 XGBoost in Python – DataCamp
+https://www.datacamp.com/tutorial/xgboost-in-python
+🔗 Feature Selection using XGBoost – Dhanya (2021)
+https://medium.com/@dhanyahari07/feature-selection-using-xgboost-f0622fb70c4d
+🔗 AIFB Dataset – DataHub
+https://datahub.io/dataset/aifb
+
+
+
+
+
