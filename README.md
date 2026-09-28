@@ -66,12 +66,8 @@ These are results recorded in the committed notebooks, not independently rerun b
 - LIME explains one prediction locally; it does not establish causality or guarantee that the model behaves the same way for every person.
 - Encoded categorical values and feature selection affect the explanations. Read the feature names and source graph before drawing domain conclusions.
 - The refined notebook reports 86% overall accuracy on 28 test rows, but per-class support is small and varies by class. Inspect the full classification report instead of relying on accuracy alone.
-- There is no automated test suite or packaged inference API in this repository.
+
 
 ## Contributing and support
 
-Open an issue with the notebook name, cell number, expected result, observed result, and Python and package versions. For a change, include a reproducible run and explain any change to data preparation, splitting, or evaluation. Do not upload private or sensitive person records.
-
-## License
-
-No license file is currently included. Public visibility alone does not grant permission to reuse or redistribute this code or its bundled data; the repository owner should add appropriate code and data licenses before inviting external reuse.
+Open an issue with the notebook name, cell number, expected result, observed result, and Python and package versions. For a change, include a reproducible run and explain any change to data preparation, splitting, or evaluation.
