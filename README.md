@@ -1,161 +1,77 @@
-Classification and Explanation with XGBoost and LIME
+# Explainable AI: AIFB Affiliation Classification
 
-Project Structure:
+This notebook project studies how to classify researcher affiliations from the AIFB RDF knowledge graph and explain individual predictions. It turns graph facts into tabular features, trains XGBoost classifiers, and uses LIME to show which features influenced a selected prediction.
 
-project/
+## Contents
 
-├── data/
+- [Project overview](#project-overview)
+- [Repository contents](#repository-contents)
+- [Setup](#setup)
+- [Run the notebooks](#run-the-notebooks)
+- [Recorded results](#recorded-results)
+- [Interpretation and limitations](#interpretation-and-limitations)
+- [Contributing and support](#contributing-and-support)
+- [License](#license)
 
-│ ├── aifbfixed\_complete.n3
+## Project overview
 
-│ ├── completeDataset.tsv
+The baseline notebook parses the RDF graph, prepares person-level features, matches the provided training and test labels, applies variance-based feature filtering, and fits an XGBoost classifier. The refined notebook uses the included `clean.csv`, selects six encoded feature columns, makes a separate train/test split, and fits another XGBoost classifier. Both notebooks generate classification reports and local LIME explanations.
 
-│ ├── trainingSet.tsv
+This is a research and learning project, not a deployed prediction service.
 
-│ └── testSet.tsv
+## Repository contents
 
-├── main.ipynb # Baseline model (78% accuracy)
+| Path | Purpose |
+| --- | --- |
+| [`main.ipynb`](main.ipynb) | RDF preprocessing, baseline classifier, evaluation, and explanation |
+| [`improved.ipynb`](improved.ipynb) | Refined feature set, classifier, evaluation, and explanation |
+| [`data/`](data/) | AIFB RDF graph and supplied TSV datasets |
+| [`clean.csv`](clean.csv) | Prepared person-level data used by `improved.ipynb` |
+| [`requirements.txt`](requirements.txt) | Pinned core Python packages |
+| `LIME_Initial_model.png`, `LIME_improved_model.png` | Saved explanation examples |
 
-├── improved.ipynb # Refined model (86% accuracy)
+## Setup
 
-├── clean.csv # Preprocessed dataset for improved model
+Use Python 3.10–3.12. From the repository root:
 
-├── requirements.txt # Required packages
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m pip install xgboost seaborn
+jupyter lab
+```
 
-└── README.txt # ← You are here
+The notebooks import `xgboost` and `seaborn`, but those packages are not listed in the current `requirements.txt`; the second install command is required until the dependency file is updated. Windows users can activate the virtual environment with `.venv\Scripts\activate`.
 
-\-------------------------------------------------------------------------------------------
+## Run the notebooks
 
-Prerequisites:
+1. Open `main.ipynb` from the repository root and run its cells in order. It reads `data/aifbfixed_complete.n3`, `data/trainingSet.tsv`, `data/testSet.tsv`, and `data/completeDataset.tsv`.
+2. Open `improved.ipynb` and run its cells in order. It reads the RDF graph and the included root-level `clean.csv`.
+3. Review the printed accuracy and classification reports, feature-importance plots, and LIME explanation for a selected test instance.
 
-Ensure you have Python 3.8+ and the following packages installed:
+Keep the notebook working directory at the repository root so relative data paths resolve. Notebook output is illustrative; re-running can produce different explanations or results depending on package versions and random sampling.
 
-pip install pandas numpy rdflib scikit-learn xgboost lime matplotlib seaborn
+## Recorded results
 
-Alternatively, run: pip install -r requirements.txt
+| Notebook | Reported test accuracy in saved output | Evaluation setup |
+| --- | ---: | --- |
+| `main.ipynb` | 77.78% | Supplied training and test entity lists |
+| `improved.ipynb` | 86% | 80/20 split of `clean.csv` with `random_state=42` |
 
-\-------------------------------------------------------------------------------------------
+These are results recorded in the committed notebooks, not independently rerun benchmarks. The datasets, features, and split procedures differ, so the figures should not be treated as a controlled comparison of models.
 
-Dataset Setup:
+## Interpretation and limitations
 
-⦁Make sure the following files are present in the data/ folder:
+- LIME explains one prediction locally; it does not establish causality or guarantee that the model behaves the same way for every person.
+- Encoded categorical values and feature selection affect the explanations. Read the feature names and source graph before drawing domain conclusions.
+- The refined notebook reports 86% overall accuracy on 28 test rows, but per-class support is small and varies by class. Inspect the full classification report instead of relying on accuracy alone.
+- There is no automated test suite or packaged inference API in this repository.
 
-⦁aifbfixed\_complete.n3 – RDF Knowledge Graph
+## Contributing and support
 
-⦁trainingSet.tsv / testSet.tsv – Train/test entity URIs + labels
+Open an issue with the notebook name, cell number, expected result, observed result, and Python and package versions. For a change, include a reproducible run and explain any change to data preparation, splitting, or evaluation. Do not upload private or sensitive person records.
 
-⦁completeDataset.tsv – For label distribution visualization
+## License
 
-\-------------------------------------------------------------------------------------------
-
-Execution Order
-
-Step 1: Run main.ipynb
-
-Implements baseline classification pipeline
-
-Uses all features after variance thresholding
-
-Test Accuracy: ~78%
-
-Includes:
-
-⦁RDF parsing, preprocessing
-
-⦁Feature selection
-
-⦁XGBoost training + evaluation
-
-⦁LIME local explanation
-
-Step 2:
-
-⦁Run improved.ipynb
-
-⦁Builds upon main.ipynb using model-driven feature selection
-
-⦁Uses only features with high importance scores
-
-⦁Input data: clean.csv (filtered dataset with valid persons only)
-
-⦁Test Accuracy: 86%
-
-\-------------------------------------------------------------------------------------------
-
-Running the Notebooks:
-
-Open the notebooks with Jupyter Notebook or VSCode, and run cells sequentially.
-
-Sections include:
-
-⦁Setup and Imports
-
-⦁RDF Graph Parsing and Preprocessing
-
-⦁Data Cleaning and Label Extraction
-
-⦁Feature Engineering + Selection
-
-⦁Model Training using XGBoost
-
-⦁LIME-based Explanation
-
-⦁Class Distribution and Feature Importance Visualization
-
-\-------------------------------------------------------------------------------------------
-
-Key Outputs
-
-⦁Train & Test Accuracy + Classification Report
-
-⦁Visualized Label Distribution
-
-⦁Top 20 Features from XGBoost
-
-⦁LIME Explanation for a sample instance
-
-\-------------------------------------------------------------------------------------------
-
-Highlights of the Pipeline:
-
-⦁Converts RDF triples into tabular format
-
-⦁Uses VarianceThreshold for feature filtering
-
-⦁Handles multi-class classification using XGBoost
-
-⦁Applies LIME for instance-level explanation
-
-⦁Improves accuracy from 78% to 86% with feature importance filtering
-
-\-------------------------------------------------------------------------------------------
-
-Troubleshooting:
-
-⦁Ensure all file paths and formats match expectations
-
-⦁Check .n3 encoding if RDF parsing fails
-
-⦁clean.csv should exist before running improved.ipynb
-
-⦁For best LIME results, use discretize\_continuous=True and ensure valid instances
-
-\-------------------------------------------------------------------------------------------
-
-References:
-
-🔗 LIME Tutorial – Official Docs
-
-https://marcotcr.github.io/lime/tutorials/Lime - basic usage, two class case.html
-
-🔗 XGBoost in Python – DataCamp
-
-https://www.datacamp.com/tutorial/xgboost-in-python
-
-🔗 Feature Selection using XGBoost – Dhanya (2021)
-
-https://medium.com/@dhanyahari07/feature-selection-using-xgboost-f0622fb70c4d
-
-🔗 AIFB Dataset – DataHub
-
-https://datahub.io/dataset/aifb
+No license file is currently included. Public visibility alone does not grant permission to reuse or redistribute this code or its bundled data; the repository owner should add appropriate code and data licenses before inviting external reuse.
